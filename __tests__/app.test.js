@@ -10,13 +10,13 @@ afterAll(() => {
 });
 
 describe("3. GET /api/topics", () => {
-  test("should return with 200 status ", () => {
+  test("should return with 200 status and an array of all the objects", () => {
     return request(app)
       .get("/api/topics")
       .expect(200)
       .then(({ body }) => {
         const { topics } = body;
-        //console.log(topics);
+
         expect(topics).toBeInstanceOf(Array);
         expect(topics).toHaveLength(3);
         topics.forEach((topic) => {
@@ -35,8 +35,43 @@ describe("3. GET /api/topics", () => {
       .get("/api/genre")
       .expect(404)
       .then((response) => {
-        console.log(response.body);
         expect(response.body.msg).toBe("Route not found");
+      });
+  });
+});
+
+describe("4. GET /api/articles/:article_id", () => {
+  test("should return with 200 status and the article object", () => {
+    return request(app)
+      .get("/api/articles/5")
+      .expect(200)
+      .then(({ body }) => {
+        const { article } = body;
+        expect(article).toHaveProperty("author");
+        expect(article).toHaveProperty("title");
+        expect(article).toHaveProperty("article_id");
+        expect(article).toHaveProperty("body");
+        expect(article).toHaveProperty("topic");
+        expect(article).toHaveProperty("created_at");
+        expect(article).toHaveProperty("votes");
+      });
+  });
+
+  test("should return error 400 not an id when past an invalid id ", () => {
+    return request(app)
+      .get("/api/articles/sad")
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toBe("Invalid input");
+      });
+  });
+
+  test('should return an error 404 "id not found" if the artice id does not exist ', () => {
+    return request(app)
+      .get("/api/articles/18")
+      .expect(404)
+      .then(({ body }) => {
+        expect(body.msg).toBe("Article ID:18 not found.");
       });
   });
 });
