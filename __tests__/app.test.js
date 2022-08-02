@@ -33,7 +33,7 @@ describe("3. GET /api/topics", () => {
   test("returns error if enpoint includes an invalid query", () => {
     return request(app)
       .get("/api/genre")
-      .expect(404)
+      .expect(400)
       .then((response) => {
         expect(response.body.msg).toBe("Route not found");
       });
@@ -72,6 +72,47 @@ describe("4. GET /api/articles/:article_id", () => {
       .expect(404)
       .then(({ body }) => {
         expect(body.msg).toBe("Article ID:18 not found.");
+      });
+  });
+});
+
+describe("5. PATCH /api/articles/:article_id", () => {
+  test("should return with 200 status and an array of all the objects", () => {
+    return request(app)
+      .patch("/api/articles/1")
+      .send({ inc_votes: -4 })
+      .expect(200)
+      .then(({ body }) => {
+        expect(body.votes).toEqual(96);
+      });
+  });
+
+  test("should return with error if id does not exist", () => {
+    return request(app)
+      .patch("/api/articles/19")
+      .send({ inc_votes: 4 })
+      .expect(404)
+      .then(({ body }) => {
+        expect(body.msg).toBe("Article ID:19 not found.");
+      });
+  });
+
+  test("should return with error if thre is no body", () => {
+    return request(app)
+      .patch("/api/articles/4")
+      .send({})
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toBe("Invalid input");
+      });
+  });
+  test("should return with error if the body message is incorrect type", () => {
+    return request(app)
+      .patch("/api/articles/4")
+      .send({ increase_votes_by: "word" })
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toBe("Invalid input");
       });
   });
 });

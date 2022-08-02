@@ -1,4 +1,6 @@
+const { request } = require("../app.js");
 const db = require("../db/connection.js");
+//const { findArticle } = require("models.utils.js");
 
 exports.selectTopics = () => {
   const queryStr = "SELECT * FROM topics;";
@@ -16,5 +18,29 @@ exports.selectArticle = (articleId) => {
       });
     }
     return article;
+  });
+};
+
+// exports.updateVotes = (articleId, votes) => {
+//   const queryStr =
+//     "UPDATE articles SET votes = $1 WHERE article_id = $2 RETURNING*";
+//   return db
+//     .query(queryStr, [votes.inc_votes, articleId])
+//     .then(({ rows }) => rows[0]);
+// };
+
+exports.updateVotes = (articleId, votes) => {
+  const queryStr =
+    "UPDATE articles SET votes = votes + $1 WHERE article_id = $2 RETURNING*";
+  return db.query(queryStr, [votes.inc_votes, articleId]).then(({ rows }) => {
+    const voteUpdate = rows[0];
+    if (!voteUpdate) {
+      return Promise.reject({
+        status: 404,
+        msg: `Article ID:${articleId} not found.`,
+      });
+    }
+
+    return voteUpdate;
   });
 };
