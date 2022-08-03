@@ -21,14 +21,6 @@ exports.selectArticle = (articleId) => {
   });
 };
 
-// exports.updateVotes = (articleId, votes) => {
-//   const queryStr =
-//     "UPDATE articles SET votes = $1 WHERE article_id = $2 RETURNING*";
-//   return db
-//     .query(queryStr, [votes.inc_votes, articleId])
-//     .then(({ rows }) => rows[0]);
-// };
-
 exports.updateVotes = (articleId, votes) => {
   const queryStr =
     "UPDATE articles SET votes = votes + $1 WHERE article_id = $2 RETURNING*";
@@ -42,5 +34,12 @@ exports.updateVotes = (articleId, votes) => {
     }
 
     return voteUpdate;
+  });
+};
+
+exports.selectUsers = () => {
+  const queryStr = "SELECT * FROM users";
+  return db.query(queryStr).then((result) => {
+    return result.rows;
   });
 };

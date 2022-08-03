@@ -106,10 +106,29 @@ describe("5. PATCH /api/articles/:article_id", () => {
         expect(body.msg).toBe("Invalid input");
       });
   });
-  test("should return with error if the body message is incorrect type", () => {
+  test("should return with error if the body message key is incorrect type", () => {
     return request(app)
       .patch("/api/articles/4")
-      .send({ increase_votes_by: "word" })
+      .send({ increase_votes_by: 4 })
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toBe("Invalid input");
+      });
+  });
+
+  test("should return with error if the body message key is incorrect type", () => {
+    return request(app)
+      .patch("/api/articles/4")
+      .send({ inc_votes: "word" })
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toBe("Invalid input");
+      });
+  });
+
+  test("should return error 400 not an id when past an invalid id ", () => {
+    return request(app)
+      .get("/api/articles/sad")
       .expect(400)
       .then(({ body }) => {
         expect(body.msg).toBe("Invalid input");
