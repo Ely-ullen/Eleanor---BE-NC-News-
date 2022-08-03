@@ -2,6 +2,7 @@ const {
   selectTopics,
   selectArticle,
   updateVotes,
+  selectUsers,
 } = require("../models/models.js");
 
 exports.getTopics = (req, res) => {
@@ -17,18 +18,6 @@ exports.getArticle = (req, res, next) => {
     .catch(next);
 };
 
-// exports.patchVotes = (req, res, next) => {
-//   const { article_id } = req.params;
-//   const { body } = req;
-//   updateVotes(article_id, body)
-//     .then((update) => {
-
-//       res.status(200).send(update);
-//     })
-
-//     .catch(next);
-// };
-
 exports.patchVotes = (req, res, next) => {
   const { article_id } = req.params;
   const { body } = req;
@@ -39,4 +28,10 @@ exports.patchVotes = (req, res, next) => {
     })
 
     .catch(next);
+};
+
+exports.getUsers = (req, res) => {
+  selectUsers().then((users) => {
+    res.status(200).send(users);
+  });
 };
