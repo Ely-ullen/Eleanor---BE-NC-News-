@@ -172,7 +172,6 @@ exports.app6_8 = describe("all tests", () => {
         .expect(200)
         .then(({ body }) => {
           const articles = body;
-          console.log(articles);
           expect(articles).toBeInstanceOf(Array);
           expect(articles).toHaveLength(0);
         });
