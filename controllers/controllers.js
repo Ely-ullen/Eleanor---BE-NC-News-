@@ -5,6 +5,7 @@ const {
   selectArticleWithComments,
   selectArticles,
   selectComments,
+  addComment,
 } = require("../models/models.js");
 
 exports.getTopics = (req, res) => {
@@ -58,6 +59,16 @@ exports.getComments = (req, res, next) => {
   selectComments(article_id)
     .then((comment) => {
       res.status(200).send(comment);
+    })
+    .catch(next);
+};
+
+exports.postComment = (req, res, next) => {
+  const { article_id } = req.params;
+  const { body } = req;
+  addComment(article_id, body)
+    .then((comment) => {
+      res.status(201).send(comment);
     })
     .catch(next);
 };
