@@ -55,3 +55,13 @@ exports.selectArticles = () => {
     return article;
   });
 };
+
+exports.selectComments = (articleId) => {
+  const queryStr =
+    "SELECT comments.comment_id, comments.votes, comments.created_at, comments.body , users.name FROM comments JOIN users ON comments.author = users.username WHERE comments.article_id = $1";
+  return db.query(queryStr, [articleId]).then(({ rows }) => {
+    const comments = rows;
+
+    return comments;
+  });
+};

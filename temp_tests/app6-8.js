@@ -76,7 +76,7 @@ exports.app6_8 = describe("all tests", () => {
   });
 
   describe("8. GET /api/articles", () => {
-    test("should return an array of article objects ", () => {
+    test("should return an array of article objects with correct properties", () => {
       return request(app)
         .get("/api/articles")
         .expect(200)
@@ -139,6 +139,56 @@ exports.app6_8 = describe("all tests", () => {
         .expect(404)
         .then(({ body }) => {
           expect(body.msg).toBe("Article ID:18 not found.");
+        });
+    });
+  });
+
+  describe("9. GET /api/articles/:article_id/comments", () => {
+    test.only("should return an array of comments for the given `article_id`", () => {
+      return request(app)
+        .get("/api/articles/1/comments")
+        .expect(200)
+        .then(({ body }) => {
+          const articles = body;
+          expect(articles).toBeInstanceOf(Array);
+          expect(articles).toHaveLength(11);
+          articles.forEach((article) => {
+            expect(article).toEqual(
+              expect.objectContaining({
+                comment_id: expect.any(Number),
+                votes: expect.any(Number),
+                created_at: expect.any(String),
+                body: expect.any(String),
+                name: expect.any(String),
+              })
+            );
+          });
+        });
+    });
+
+    test("should return error 400 not an id when past an invalid id ", () => {
+      return request(app)
+        .get("/api/articles/sad/comments")
+        .expect(400)
+        .then(({ body }) => {
+          expect(body.msg).toBe("Invalid input");
+        });
+    });
+
+    test("should return error 400 not an id when past an invalid id ", () => {
+      return request(app)
+        .get("/api/articles/sad/comments")
+        .expect(400)
+        .then(({ body }) => {
+          expect(body.msg).toBe("Invalid input");
+        });
+    });
+    test('should return an error 404 "id not found" if the artice id does not exist ', () => {
+      return request(app)
+        .get("/api/articles/6/coomets")
+        .expect(400)
+        .then(({ body }) => {
+          expect(body.msg).toBe("Route not found");
         });
     });
   });
