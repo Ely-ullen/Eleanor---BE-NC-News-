@@ -65,3 +65,16 @@ exports.selectComments = (articleId) => {
     return comments;
   });
 };
+
+exports.addComment = (articleId, comment) => {
+  const queryStr =
+    "INSERT INTO comments (votes, created_at, body,  author, article_id) VALUES (0, 'today', $2, $1, $3) RETURNING*";
+
+  return db
+    .query(queryStr, [comment.username, comment.body, articleId])
+    .then(({ rows }) => {
+      const comments = rows[0];
+
+      return comments;
+    });
+};

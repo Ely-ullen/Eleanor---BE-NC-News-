@@ -203,4 +203,64 @@ exports.app6_8 = describe("all tests", () => {
         });
     });
   });
+
+  describe("10. POST /api/articles/:article_id/comments", () => {
+    test("should post a comment into the comments table", () => {
+      const newComment = {
+        username: "icellusedkars",
+        body: "I cant not believe it",
+      };
+
+      return request(app)
+        .post("/api/articles/4/comments")
+        .send(newComment)
+        .expect(201)
+        .then(({ body }) => {
+          const comment = body;
+          expect(comment.article_id).toEqual(4),
+            expect(comment.body).toEqual("I cant not believe it"),
+            expect(comment.author).toEqual("icellusedkars");
+        });
+    });
+
+    test("should return with 404 error when there is no post provided", () => {
+      return request(app)
+        .post("/api/articles/4/comments")
+        .send({})
+        .expect(400)
+        .then(({ body }) => {
+          expect(body.msg).toBe("Invalid input");
+        });
+    });
+
+    test("should return with error if the body message keys are incorrect ", () => {
+      const newComment = {
+        user: "icellusedkars",
+        msg: "I cant not believe it",
+      };
+
+      return request(app)
+        .post("/api/articles/4/comments")
+        .send(newComment)
+        .expect(400)
+        .then(({ body }) => {
+          expect(body.msg).toBe("Invalid input");
+        });
+    });
+
+    test("should return with error if the the object values are the incorrect type", () => {
+      const newComment = {
+        user: 8,
+        msg: 9,
+      };
+
+      return request(app)
+        .post("/api/articles/4/comments")
+        .send(newComment)
+        .expect(400)
+        .then(({ body }) => {
+          expect(body.msg).toBe("Invalid input");
+        });
+    });
+  });
 });
