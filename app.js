@@ -1,10 +1,10 @@
 const express = require("express");
 const {
   getTopics,
-
   patchVotes,
   getUsers,
   getArticleWithComments,
+  getArticles,
 } = require("./controllers/controllers.js");
 
 const app = express();
@@ -19,6 +19,8 @@ app.patch("/api/articles/:article_id", patchVotes);
 app.get("/api/users", getUsers);
 
 app.get("/api/articles/:article_id", getArticleWithComments);
+
+app.get("/api/articles", getArticles);
 
 app.all("/*", (req, res) => {
   res.status(400).send({ msg: "Route not found" });

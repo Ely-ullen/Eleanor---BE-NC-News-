@@ -1,5 +1,6 @@
 const request = require("supertest");
 const app = require("../app.js");
+require("jest-sorted");
 // const db = require("../db/connection.js");
 // const seed = require("../db/seeds/seed");
 // const data = require("../db/data/test-data/index.js");
@@ -33,7 +34,7 @@ exports.app6_8 = describe("all tests", () => {
         .get("/api/articles/4")
         .expect(200)
         .then(({ body }) => {
-          const article = body;
+          const { article } = body;
 
           expect(article).toHaveProperty("author");
           expect(article).toHaveProperty("title");
@@ -50,8 +51,76 @@ exports.app6_8 = describe("all tests", () => {
         .get("/api/articles/1")
         .expect(200)
         .then(({ body }) => {
-          const article = body;
+          const { article } = body;
           expect(article.comment_count).toBe("11");
+        });
+    });
+
+    test("should return error 400 not an id when past an invalid id ", () => {
+      return request(app)
+        .get("/api/articles/sad")
+        .expect(400)
+        .then(({ body }) => {
+          expect(body.msg).toBe("Invalid input");
+        });
+    });
+
+    test('should return an error 404 "id not found" if the artice id does not exist ', () => {
+      return request(app)
+        .get("/api/articles/18")
+        .expect(404)
+        .then(({ body }) => {
+          expect(body.msg).toBe("Article ID:18 not found.");
+        });
+    });
+  });
+
+  describe("8. GET /api/articles", () => {
+    test("should return an array of article objects ", () => {
+      return request(app)
+        .get("/api/articles")
+        .expect(200)
+        .then(({ body }) => {
+          const articles = body;
+
+          expect(articles).toBeInstanceOf(Array);
+          expect(articles).toHaveLength(12);
+          articles.forEach((article) => {
+            expect(article).toEqual(
+              expect.objectContaining({
+                article_id: expect.any(Number),
+                title: expect.any(String),
+                topic: expect.any(String),
+                author: expect.any(String),
+                body: expect.any(String),
+                created_at: expect.any(String),
+                votes: expect.any(Number),
+                comment_count: expect.any(String),
+              })
+            );
+          });
+        });
+    });
+
+    test("the returned array should be sorted by created at in decending order ", () => {
+      return request(app)
+        .get("/api/articles")
+        .expect(200)
+        .then(({ body }) => {
+          const articles = body;
+          expect(articles).toBeSortedBy("created_at", { descending: true });
+        });
+    });
+
+    test("topic field, author feild and comment count are correctly joined form their respective tables ", () => {
+      return request(app)
+        .get("/api/articles")
+        .expect(200)
+        .then(({ body }) => {
+          const articles = body[0];
+          expect(articles.article_id).toBe(3);
+          expect(articles.author).toBe("icellusedkars");
+          expect(articles.comment_count).toBe("2");
         });
     });
 
