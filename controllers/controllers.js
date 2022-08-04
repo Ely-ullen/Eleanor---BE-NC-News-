@@ -1,9 +1,9 @@
 const {
   selectTopics,
-
   updateVotes,
   selectUsers,
-  SelectArticleWithComments,
+  selectArticleWithComments,
+  selectArticles,
 } = require("../models/models.js");
 
 exports.getTopics = (req, res) => {
@@ -39,9 +39,15 @@ exports.getUsers = (req, res) => {
 
 exports.getArticleWithComments = (req, res, next) => {
   const { article_id } = req.params;
-  SelectArticleWithComments(article_id)
+  selectArticleWithComments(article_id)
     .then((article) => {
-      res.status(200).send(article);
+      res.status(200).send({ article });
     })
     .catch(next);
+};
+
+exports.getArticles = (req, res, next) => {
+  selectArticles().then((articles) => {
+    res.status(200).send(articles);
+  });
 };
