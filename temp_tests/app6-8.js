@@ -166,6 +166,18 @@ exports.app6_8 = describe("all tests", () => {
         });
     });
 
+    test.only("should return an empty array for the given `article_id` if article has no comments", () => {
+      return request(app)
+        .get("/api/articles/4/comments")
+        .expect(200)
+        .then(({ body }) => {
+          const articles = body;
+          console.log(articles);
+          expect(articles).toBeInstanceOf(Array);
+          expect(articles).toHaveLength(0);
+        });
+    });
+
     test("should return error 400 not an id when past an invalid id ", () => {
       return request(app)
         .get("/api/articles/sad/comments")
