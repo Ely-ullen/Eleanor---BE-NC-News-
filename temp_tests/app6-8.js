@@ -144,7 +144,7 @@ exports.app6_8 = describe("all tests", () => {
   });
 
   describe("9. GET /api/articles/:article_id/comments", () => {
-    test.only("should return an array of comments for the given `article_id`", () => {
+    test("should return an array of comments for the given `article_id`", () => {
       return request(app)
         .get("/api/articles/1/comments")
         .expect(200)
