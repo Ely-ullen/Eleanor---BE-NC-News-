@@ -166,7 +166,7 @@ exports.app6_8 = describe("all tests", () => {
         });
     });
 
-    test.only("should return an empty array for the given `article_id` if article has no comments", () => {
+    test("should return an empty array for the given `article_id` if article has no comments", () => {
       return request(app)
         .get("/api/articles/4/comments")
         .expect(200)
