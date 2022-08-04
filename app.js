@@ -5,6 +5,7 @@ const {
   getUsers,
   getArticleWithComments,
   getArticles,
+  getComments,
 } = require("./controllers/controllers.js");
 
 const app = express();
@@ -21,6 +22,8 @@ app.get("/api/users", getUsers);
 app.get("/api/articles/:article_id", getArticleWithComments);
 
 app.get("/api/articles", getArticles);
+
+app.get("/api/articles/:article_id/comments", getComments);
 
 app.all("/*", (req, res) => {
   res.status(400).send({ msg: "Route not found" });
