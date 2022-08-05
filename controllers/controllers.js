@@ -8,6 +8,7 @@ const {
   addComment,
   removeComment,
 } = require("../models/models.js");
+// const endpoints = require("../endpoints.json");
 
 exports.getTopics = (req, res) => {
   selectTopics().then((topics) => res.status(200).send({ topics }));
@@ -95,3 +96,7 @@ exports.deleteComment = (req, res, next) => {
     })
     .catch(next);
 };
+
+// exports.getApis = (req, res) => {
+//   res.status(200).sed(endpoints);
+// };

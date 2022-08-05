@@ -392,4 +392,10 @@ exports.app6_8 = describe("all tests", () => {
         });
     });
   });
+
+  // describe("GET /api ", () => {
+  //   test.only("should return json file wioth list of API and related infomation", () => {
+  //     return request(app).get("/api").expect(200);
+  //   });
+  // });
 });
