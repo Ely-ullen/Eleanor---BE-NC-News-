@@ -94,6 +94,22 @@ exports.addComment = (articleId, comment) => {
 };
 
 exports.selectArticles = (sortBy = `created_at`, orderBy = `DESC`, topic) => {
+  const validSortBy = [
+    "author",
+    "title",
+    "body",
+    "topic",
+    "created_at",
+    "votes",
+    "comment_count",
+  ];
+
+  const validOrderBy = ["ASC", "DESC"];
+
+  if (!validSortBy.includes(sortBy) || !validOrderBy.includes(orderBy)) {
+    return Promise.reject({ status: 400, msg: "Bad request" });
+  }
+
   let queryStr =
     "SELECT articles.article_id, articles.title, articles.topic, users.username AS author,  articles.body, articles.created_at, articles.votes , COUNT(comment_id) AS comment_count FROM articles JOIN users ON articles.author = users.username LEFT JOIN comments ON comments.article_id = articles.article_id ";
 

@@ -324,14 +324,23 @@ exports.app6_8 = describe("all tests", () => {
         });
     });
 
-    // test.only("returns error if any request feilds are worng", () => {
-    //   return request(app)
-    //     .get("/api/articles?sort_by=title&order_by=ASC&topic=spaceman")
-    //     .expect(200)
-    //     .then(({ body }) => {
-    //       console.log(body);
-    //     });
-    // });
+    test("returns error if order_by is not valid", () => {
+      return request(app)
+        .get("/api/articles?sort_by=votes&order_by=Aggg&topic=spaceman")
+        .expect(400)
+        .then(({ body }) => {
+          expect(body.msg).toBe("Bad request");
+        });
+    });
+
+    test("returns error if sort_by is not valid", () => {
+      return request(app)
+        .get("/api/articles?sort_by=badger&order_by=ASC&topic=spaceman")
+        .expect(400)
+        .then(({ body }) => {
+          expect(body.msg).toBe("Bad request");
+        });
+    });
   });
 
   // describe("12. DELETE /api/comments/:comment_id", () => {
