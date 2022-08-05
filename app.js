@@ -8,12 +8,13 @@ const {
   getComments,
   postComment,
   deleteComment,
+  getApis,
 } = require("./controllers/controllers.js");
 
 const app = express();
 app.use(express.json());
 
-// app.get("/api", getApis);
+app.get("/api", getApis);
 app.get("/api/topics", getTopics);
 
 //app.get("/api/articles/:article_id", getArticle);
