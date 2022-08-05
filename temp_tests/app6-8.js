@@ -188,13 +188,13 @@ exports.app6_8 = describe("all tests", () => {
 
     test("should return error 400 not an id when past an invalid id ", () => {
       return request(app)
-        .get("/api/articles/sad/comments")
-        .expect(400)
+        .get("/api/articles/58/comments")
+        .expect(404)
         .then(({ body }) => {
-          expect(body.msg).toBe("Invalid input");
+          expect(body.msg).toBe("Article ID:58 not found.");
         });
     });
-    test('should return an error 404 "id not found" if the artice id does not exist ', () => {
+    test("should return an error 404 if there is a sad path ", () => {
       return request(app)
         .get("/api/articles/6/coomets")
         .expect(400)
@@ -263,4 +263,109 @@ exports.app6_8 = describe("all tests", () => {
         });
     });
   });
+
+  describe("11. GET /api/articles (queries)", () => {
+    test("sorts the response by deful created_at when no sort_by defined in request ", () => {
+      return request(app)
+        .get("/api/articles")
+        .expect(200)
+        .then(({ body }) => {
+          const articles = body;
+
+          expect(articles).toBeSortedBy("created_at", { descending: true });
+        });
+    });
+
+    test("sorts the response by votes ", () => {
+      return request(app)
+        .get("/api/articles?sort_by=votes")
+        .expect(200)
+        .then(({ body }) => {
+          const articles = body;
+
+          expect(articles).toBeSortedBy("votes", { descending: true });
+        });
+    });
+
+    test("sorts the response by a articles feild and requested order ", () => {
+      return request(app)
+        .get("/api/articles?sort_by=title&order_by=ASC")
+        .expect(200)
+        .then(({ body }) => {
+          const articles = body;
+
+          expect(articles).toBeSortedBy("title", { descending: false });
+        });
+    });
+
+    test("sorts the response by a articles feild, requested order and filters by requeted topic ", () => {
+      return request(app)
+        .get("/api/articles?sort_by=title&order_by=ASC&topic=cats")
+        .expect(200)
+        .then(({ body }) => {
+          const articles = body;
+
+          expect(articles).toBeSortedBy("title", { descending: false });
+          articles.forEach((article) => {
+            expect(article.topic).toEqual("cats");
+          });
+        });
+    });
+
+    test("returns all topics if no topics requested ", () => {
+      return request(app)
+        .get("/api/articles?sort_by=title&order_by=ASC")
+        .expect(200)
+        .then(({ body }) => {
+          const articles = body;
+
+          expect(articles).toBeSortedBy("title", { descending: false });
+          expect(articles).toHaveLength(12);
+        });
+    });
+
+    // test.only("returns error if any request feilds are worng", () => {
+    //   return request(app)
+    //     .get("/api/articles?sort_by=title&order_by=ASC&topic=spaceman")
+    //     .expect(200)
+    //     .then(({ body }) => {
+    //       console.log(body);
+    //     });
+    // });
+  });
+
+  // describe("12. DELETE /api/comments/:comment_id", () => {
+  //   test("should  delete comment with comment id", () => {
+  //     return request(app).delete("/api/comments/5").expect(204);
+  //   });
+  //   test("shuold return error if the api is incorrect", () => {
+  //     return request(app)
+  //       .delete("/api/comm/5")
+  //       .expect(400)
+  //       .then(({ body }) => {
+  //         expect(body.msg).toBe("Route not found");
+  //       });
+  //   });
+  //   test("should  delete comment with comment id", () => {
+  //     return request(app).delete("/api/comments/5").expect(204);
+  //   });
+
+  //   test("should return error 400 not an id when past an invalid id ", () => {
+  //     return request(app)
+  //       .delete("/api/comments/58")
+  //       .expect(404)
+  //       .then(({ body }) => {
+  //         expect(body.msg).toBe("Comment Id:58 not found.");
+  //       });
+  //   });
+
+  //   test("should return error 400 not an id when past an invalid id ", () => {
+  //     return request(app)
+  //       .delete("/api/comments/notanId")
+  //       .expect(400)
+  //       .then(({ body }) => {
+  //         expect(body.msg).toBe("Invalid input");
+  //       });
+  //   });
+  // });
 });

@@ -48,11 +48,11 @@ exports.getArticleWithComments = (req, res, next) => {
     .catch(next);
 };
 
-exports.getArticles = (req, res, next) => {
-  selectArticles().then((articles) => {
-    res.status(200).send(articles);
-  });
-};
+// exports.getArticles = (req, res, next) => {
+//   selectArticles().then((articles) => {
+//     res.status(200).send(articles);
+//   });
+// };
 
 exports.getComments = (req, res, next) => {
   const { article_id } = req.params;
@@ -72,3 +72,25 @@ exports.postComment = (req, res, next) => {
     })
     .catch(next);
 };
+
+exports.getArticles = (req, res, next) => {
+  const { sort_by } = req.query;
+  const { order_by } = req.query;
+  const { topic } = req.query;
+
+  selectArticles(sort_by, order_by, topic)
+    .then((articles) => {
+      res.status(200).send(articles);
+    })
+
+    .catch(next);
+};
+
+// exports.deleteComment = (req, res, next) => {
+//   const { comment_id } = req.params;
+//   removeComment(comment_id)
+//     .then((comment) => {
+//       res.status(204).send();
+//     })
+//     .catch(next);
+// };
