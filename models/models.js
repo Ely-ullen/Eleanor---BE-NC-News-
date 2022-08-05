@@ -81,15 +81,30 @@ exports.selectComments = (articleId) => {
 };
 
 exports.addComment = (articleId, comment) => {
+  const validId = "SELECT article_id FROM articles WHERE article_id = $1";
+
   const queryStr =
     "INSERT INTO comments (body,  author, article_id) VALUES ($2, $1, $3) RETURNING*";
 
   return db
-    .query(queryStr, [comment.username, comment.body, articleId])
+    .query(validId, [articleId])
     .then(({ rows }) => {
-      const comments = rows[0];
+      if (rows.length === 0) {
+        return Promise.reject({
+          status: 404,
+          msg: `Article ID:${articleId} not found.`,
+        });
+      }
+      return rows[0].article_id;
+    })
+    .then((id) => {
+      return db
+        .query(queryStr, [comment.username, comment.body, articleId])
+        .then(({ rows }) => {
+          const comments = rows[0];
 
-      return comments;
+          return comments;
+        });
     });
 };
 
@@ -132,15 +147,15 @@ exports.selectArticles = (sortBy = `created_at`, orderBy = `DESC`, topic) => {
   }
 };
 
-// exports.removeComment = (commentId) => {
-//   const queryStr = "DELETE FROM comments WHERE comment_id = $1 RETURNING*";
-//   return db.query(queryStr, [commentId]).then(({ rows }) => {
-//     let comment = rows[0];
-//     if (!comment) {
-//       return Promise.reject({
-//         status: 404,
-//         msg: `Comment Id:${commentId} not found.`,
-//       });
-//     }
-//   });
-// };
+exports.removeComment = (commentId) => {
+  const queryStr = "DELETE FROM comments WHERE comment_id = $1 RETURNING*";
+  return db.query(queryStr, [commentId]).then(({ rows }) => {
+    let comment = rows[0];
+    if (!comment) {
+      return Promise.reject({
+        status: 404,
+        msg: `Comment Id:${commentId} not found.`,
+      });
+    }
+  });
+};

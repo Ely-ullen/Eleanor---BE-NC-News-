@@ -262,6 +262,21 @@ exports.app6_8 = describe("all tests", () => {
           expect(body.msg).toBe("Invalid input");
         });
     });
+
+    test("should post a comment into the comments table", () => {
+      const newComment = {
+        username: "icellusedkars",
+        body: "I cant not believe it",
+      };
+
+      return request(app)
+        .post("/api/articles/999/comments")
+        .send(newComment)
+        .expect(404)
+        .then(({ body }) => {
+          expect(body.msg).toBe("Article ID:999 not found.");
+        });
+    });
   });
 
   describe("11. GET /api/articles (queries)", () => {
@@ -343,38 +358,38 @@ exports.app6_8 = describe("all tests", () => {
     });
   });
 
-  // describe("12. DELETE /api/comments/:comment_id", () => {
-  //   test("should  delete comment with comment id", () => {
-  //     return request(app).delete("/api/comments/5").expect(204);
-  //   });
-  //   test("shuold return error if the api is incorrect", () => {
-  //     return request(app)
-  //       .delete("/api/comm/5")
-  //       .expect(400)
-  //       .then(({ body }) => {
-  //         expect(body.msg).toBe("Route not found");
-  //       });
-  //   });
-  //   test("should  delete comment with comment id", () => {
-  //     return request(app).delete("/api/comments/5").expect(204);
-  //   });
+  describe("12. DELETE /api/comments/:comment_id", () => {
+    test("should  delete comment with comment id", () => {
+      return request(app).delete("/api/comments/5").expect(204);
+    });
+    test("shuold return error if the api is incorrect", () => {
+      return request(app)
+        .delete("/api/comm/5")
+        .expect(400)
+        .then(({ body }) => {
+          expect(body.msg).toBe("Route not found");
+        });
+    });
+    test("should  delete comment with comment id", () => {
+      return request(app).delete("/api/comments/5").expect(204);
+    });
 
-  //   test("should return error 400 not an id when past an invalid id ", () => {
-  //     return request(app)
-  //       .delete("/api/comments/58")
-  //       .expect(404)
-  //       .then(({ body }) => {
-  //         expect(body.msg).toBe("Comment Id:58 not found.");
-  //       });
-  //   });
+    test("should return error 400 not an id when past an invalid id ", () => {
+      return request(app)
+        .delete("/api/comments/58")
+        .expect(404)
+        .then(({ body }) => {
+          expect(body.msg).toBe("Comment Id:58 not found.");
+        });
+    });
 
-  //   test("should return error 400 not an id when past an invalid id ", () => {
-  //     return request(app)
-  //       .delete("/api/comments/notanId")
-  //       .expect(400)
-  //       .then(({ body }) => {
-  //         expect(body.msg).toBe("Invalid input");
-  //       });
-  //   });
-  // });
+    test("should return error 400 not an id when past an invalid id ", () => {
+      return request(app)
+        .delete("/api/comments/notanId")
+        .expect(400)
+        .then(({ body }) => {
+          expect(body.msg).toBe("Invalid input");
+        });
+    });
+  });
 });

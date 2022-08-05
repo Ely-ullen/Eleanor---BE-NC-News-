@@ -6,6 +6,7 @@ const {
   selectArticles,
   selectComments,
   addComment,
+  removeComment,
 } = require("../models/models.js");
 
 exports.getTopics = (req, res) => {
@@ -86,11 +87,11 @@ exports.getArticles = (req, res, next) => {
     .catch(next);
 };
 
-// exports.deleteComment = (req, res, next) => {
-//   const { comment_id } = req.params;
-//   removeComment(comment_id)
-//     .then((comment) => {
-//       res.status(204).send();
-//     })
-//     .catch(next);
-// };
+exports.deleteComment = (req, res, next) => {
+  const { comment_id } = req.params;
+  removeComment(comment_id)
+    .then((comment) => {
+      res.status(204).send();
+    })
+    .catch(next);
+};
