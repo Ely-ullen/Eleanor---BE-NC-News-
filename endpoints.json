@@ -19,9 +19,16 @@
           "topic": "cooking",
           "author": "weegembump",
           "body": "Text from the article..",
-          "created_at": 1527695953341
+          "created_at": 1527695953341,
+          "votes": 3,
+          "comment_count": 11
         }
       ]
     }
   }
+,
+{"GET /api/articles/:article_id"},
+{"GET /api/articles/:article_id/comments"},
+{"POST /api/articles/:article_id/comments"},
+{"DELETE /api/comments/:comment_id"},
 }

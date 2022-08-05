@@ -28,6 +28,8 @@ app.get("/api/articles/:article_id/comments", getComments);
 
 app.post("/api/articles/:article_id/comments", postComment);
 
+// app.delete("/api/comments/:comment_id", deleteComment);
+
 app.all("/*", (req, res) => {
   res.status(400).send({ msg: "Route not found" });
 });
