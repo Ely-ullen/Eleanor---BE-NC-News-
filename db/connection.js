@@ -12,11 +12,11 @@ if (!process.env.PGDATABASE && !process.env.DATABASE_URL) {
 const config =
   ENV === "production"
     ? {
-        connectionString: `process.env.${ENV}`,
+        connectionString: process.env.DATABASE_URL,
         ssl: {
           rejectUnauthorized: false,
         },
       }
     : {};
 
-module.exports = new Pool();
+module.exports = new Pool(config);
