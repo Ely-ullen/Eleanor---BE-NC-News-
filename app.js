@@ -1,4 +1,6 @@
 const express = require("express");
+const cors = require("cors");
+
 const {
   getTopics,
   patchVotes,
@@ -12,6 +14,9 @@ const {
 } = require("./controllers/controllers.js");
 
 const app = express();
+
+app.use(cors());
+
 app.use(express.json());
 
 app.get("/api", getApis);
