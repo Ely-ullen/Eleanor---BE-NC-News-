@@ -122,7 +122,10 @@ exports.selectArticles = (sortBy = `created_at`, orderBy = `DESC`, topic) => {
   const validOrderBy = ["ASC", "DESC"];
 
   if (!validSortBy.includes(sortBy) || !validOrderBy.includes(orderBy)) {
-    return Promise.reject({ status: 400, msg: "Bad request" });
+    return Promise.reject({
+      status: 400,
+      msg: "Not a valid sort or order query",
+    });
   }
 
   let queryStr =

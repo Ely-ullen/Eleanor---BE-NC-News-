@@ -344,7 +344,7 @@ exports.app6_8 = describe("all tests", () => {
         .get("/api/articles?sort_by=votes&order_by=Aggg&topic=spaceman")
         .expect(400)
         .then(({ body }) => {
-          expect(body.msg).toBe("Bad request");
+          expect(body.msg).toBe("Not a valid sort or order query");
         });
     });
 
@@ -353,7 +353,7 @@ exports.app6_8 = describe("all tests", () => {
         .get("/api/articles?sort_by=badger&order_by=ASC&topic=spaceman")
         .expect(400)
         .then(({ body }) => {
-          expect(body.msg).toBe("Bad request");
+          expect(body.msg).toBe("Not a valid sort or order query");
         });
     });
   });
