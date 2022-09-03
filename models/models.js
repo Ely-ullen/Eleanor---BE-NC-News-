@@ -1,6 +1,5 @@
 const { request } = require("../app.js");
 const db = require("../db/connection.js");
-//const { findArticle } = require("models.utils.js");
 
 exports.selectTopics = () => {
   const queryStr = "SELECT * FROM topics;";

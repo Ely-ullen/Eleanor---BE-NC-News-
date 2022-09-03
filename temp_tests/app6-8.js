@@ -7,7 +7,7 @@ require("jest-sorted");
 
 exports.app6_8 = describe("all tests", () => {
   describe("6. GET /api/users", () => {
-    test("status:200, responds with an array of user objects", () => {
+    test("should return a status:200, and an array of user objects", () => {
       return request(app)
         .get("/api/users")
         .expect(200)
@@ -29,7 +29,7 @@ exports.app6_8 = describe("all tests", () => {
   });
 
   describe("7. GET /api/articles/:article_id (comment count)", () => {
-    test("should resturn an object containging the article with a feild comment_count with the count of comments in the comment table", () => {
+    test("should return an object containing the article with a feild comment_count with the count of comments in the comment table", () => {
       return request(app)
         .get("/api/articles/4")
         .expect(200)
@@ -46,7 +46,7 @@ exports.app6_8 = describe("all tests", () => {
         });
     });
 
-    test("the returned article cooment count value should be 11 ", () => {
+    test("should return the articles correct comment count ", () => {
       return request(app)
         .get("/api/articles/1")
         .expect(200)
@@ -56,7 +56,7 @@ exports.app6_8 = describe("all tests", () => {
         });
     });
 
-    test("should return error 400 not an id when past an invalid id ", () => {
+    test("should return error 400 when passed an invalid id ", () => {
       return request(app)
         .get("/api/articles/sad")
         .expect(400)
@@ -124,7 +124,7 @@ exports.app6_8 = describe("all tests", () => {
         });
     });
 
-    test("should return error 400 not an id when past an invalid id ", () => {
+    test("should return error 400  when passed an invalid id ", () => {
       return request(app)
         .get("/api/articles/sad")
         .expect(400)
@@ -177,7 +177,7 @@ exports.app6_8 = describe("all tests", () => {
         });
     });
 
-    test("should return error 400 not an id when past an invalid id ", () => {
+    test("should return error 400 not an id when passed an invalid id ", () => {
       return request(app)
         .get("/api/articles/sad/comments")
         .expect(400)
@@ -186,7 +186,7 @@ exports.app6_8 = describe("all tests", () => {
         });
     });
 
-    test("should return error 400 not an id when past an invalid id ", () => {
+    test("should return error 400 not an id when passed an invalid id ", () => {
       return request(app)
         .get("/api/articles/58/comments")
         .expect(404)
@@ -280,7 +280,7 @@ exports.app6_8 = describe("all tests", () => {
   });
 
   describe("11. GET /api/articles (queries)", () => {
-    test("sorts the response by deful created_at when no sort_by defined in request ", () => {
+    test("sorts the response by default created_at when there is no sort_by defined in request ", () => {
       return request(app)
         .get("/api/articles")
         .expect(200)
@@ -302,7 +302,7 @@ exports.app6_8 = describe("all tests", () => {
         });
     });
 
-    test("sorts the response by a articles feild and requested order ", () => {
+    test("sorts the response by an articles feild and requested order ", () => {
       return request(app)
         .get("/api/articles?sort_by=title&order_by=ASC")
         .expect(200)
@@ -313,7 +313,7 @@ exports.app6_8 = describe("all tests", () => {
         });
     });
 
-    test("sorts the response by a articles feild, requested order and filters by requeted topic ", () => {
+    test("sorts the response by an articles feild, requested order and filters by requeted topic ", () => {
       return request(app)
         .get("/api/articles?sort_by=title&order_by=ASC&topic=cats")
         .expect(200)
@@ -327,7 +327,7 @@ exports.app6_8 = describe("all tests", () => {
         });
     });
 
-    test("returns all topics if no topics requested ", () => {
+    test("should return all topics if no topics requested ", () => {
       return request(app)
         .get("/api/articles?sort_by=title&order_by=ASC")
         .expect(200)
@@ -339,7 +339,7 @@ exports.app6_8 = describe("all tests", () => {
         });
     });
 
-    test("returns error if order_by is not valid", () => {
+    test("should return an error if order_by is not valid", () => {
       return request(app)
         .get("/api/articles?sort_by=votes&order_by=Aggg&topic=spaceman")
         .expect(400)
@@ -348,7 +348,7 @@ exports.app6_8 = describe("all tests", () => {
         });
     });
 
-    test("returns error if sort_by is not valid", () => {
+    test("should return an error if sort_by is not valid", () => {
       return request(app)
         .get("/api/articles?sort_by=badger&order_by=ASC&topic=spaceman")
         .expect(400)
@@ -374,7 +374,7 @@ exports.app6_8 = describe("all tests", () => {
       return request(app).delete("/api/comments/5").expect(204);
     });
 
-    test("should return error 400 not an id when past an invalid id ", () => {
+    test("should return error 400 not an id when passed an invalid id ", () => {
       return request(app)
         .delete("/api/comments/58")
         .expect(404)
@@ -383,7 +383,7 @@ exports.app6_8 = describe("all tests", () => {
         });
     });
 
-    test("should return error 400 not an id when past an invalid id ", () => {
+    test("should return error 400 not an id when passed an invalid id ", () => {
       return request(app)
         .delete("/api/comments/notanId")
         .expect(400)

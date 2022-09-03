@@ -26,7 +26,7 @@ exports.app1_5 = describe("all tests", () => {
         });
     });
 
-    test("returns error if enpoint includes an invalid query", () => {
+    test("should return error if enpoint includes an invalid query", () => {
       return request(app)
         .get("/api/genre")
         .expect(400)
@@ -36,44 +36,8 @@ exports.app1_5 = describe("all tests", () => {
     });
   });
 
-  // describe("4. GET /api/articles/:article_id", () => {
-  //   test("should return with 200 status and the article object", () => {
-  //     return request(app)
-  //       .get("/api/articles/5")
-  //       .expect(200)
-  //       .then(({ body }) => {
-  //         const { article } = body;
-  //         expect(article).toHaveProperty("author");
-  //         expect(article).toHaveProperty("title");
-  //         expect(article).toHaveProperty("article_id");
-  //         expect(article).toHaveProperty("body");
-  //         expect(article).toHaveProperty("topic");
-  //         expect(article).toHaveProperty("created_at");
-  //         expect(article).toHaveProperty("votes");
-  //       });
-  //   });
-
-  //   test("should return error 400 not an id when past an invalid id ", () => {
-  //     return request(app)
-  //       .get("/api/articles/sad")
-  //       .expect(400)
-  //       .then(({ body }) => {
-  //         expect(body.msg).toBe("Invalid input");
-  //       });
-  //   });
-
-  //   test('should return an error 404 "id not found" if the artice id does not exist ', () => {
-  //     return request(app)
-  //       .get("/api/articles/18")
-  //       .expect(404)
-  //       .then(({ body }) => {
-  //         expect(body.msg).toBe("Article ID:18 not found.");
-  //       });
-  //   });
-  // });
-
   describe("5. PATCH /api/articles/:article_id", () => {
-    test("should return with 200 status and an array of all the objects", () => {
+    test("should return with 200 status and votes to be updated", () => {
       return request(app)
         .patch("/api/articles/1")
         .send({ inc_votes: -4 })
@@ -112,7 +76,7 @@ exports.app1_5 = describe("all tests", () => {
         });
     });
 
-    test("should return with error if the body message key is incorrect type", () => {
+    test("should return with error if the body message value is incorrect type", () => {
       return request(app)
         .patch("/api/articles/4")
         .send({ inc_votes: "word" })
@@ -122,7 +86,7 @@ exports.app1_5 = describe("all tests", () => {
         });
     });
 
-    test("should return error 400 not an id when past an invalid id ", () => {
+    test("should return error 400 when past an invalid id ", () => {
       return request(app)
         .get("/api/articles/sad")
         .expect(400)
