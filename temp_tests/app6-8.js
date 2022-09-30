@@ -143,10 +143,10 @@ exports.app6_8 = describe("all tests", () => {
     });
   });
 
-  describe("9. GET /api/articles/:article_id/comments", () => {
+  describe("9. GET /api/comments/:article_id/comments", () => {
     test("should return an array of comments for the given `article_id`", () => {
       return request(app)
-        .get("/api/articles/1/comments")
+        .get("/api/comments/1/comments")
         .expect(200)
         .then(({ body }) => {
           const articles = body;
@@ -168,7 +168,7 @@ exports.app6_8 = describe("all tests", () => {
 
     test("should return an empty array for the given `article_id` if article has no comments", () => {
       return request(app)
-        .get("/api/articles/4/comments")
+        .get("/api/comments/4/comments")
         .expect(200)
         .then(({ body }) => {
           const articles = body;
@@ -179,7 +179,7 @@ exports.app6_8 = describe("all tests", () => {
 
     test("should return error 400 not an id when passed an invalid id ", () => {
       return request(app)
-        .get("/api/articles/sad/comments")
+        .get("/api/comments/sad/comments")
         .expect(400)
         .then(({ body }) => {
           expect(body.msg).toBe("Invalid input");
@@ -188,7 +188,7 @@ exports.app6_8 = describe("all tests", () => {
 
     test("should return error 400 not an id when passed an invalid id ", () => {
       return request(app)
-        .get("/api/articles/58/comments")
+        .get("/api/comments/58/comments")
         .expect(404)
         .then(({ body }) => {
           expect(body.msg).toBe("Article ID:58 not found.");
@@ -196,7 +196,7 @@ exports.app6_8 = describe("all tests", () => {
     });
     test("should return an error 404 if there is a sad path ", () => {
       return request(app)
-        .get("/api/articles/6/coomets")
+        .get("/api/comments/6/coomets")
         .expect(400)
         .then(({ body }) => {
           expect(body.msg).toBe("Route not found");
@@ -204,7 +204,7 @@ exports.app6_8 = describe("all tests", () => {
     });
   });
 
-  describe("10. POST /api/articles/:article_id/comments", () => {
+  describe("10. POST /api/comments/:article_id/comments", () => {
     test("should post a comment into the comments table", () => {
       const newComment = {
         username: "icellusedkars",
@@ -212,7 +212,7 @@ exports.app6_8 = describe("all tests", () => {
       };
 
       return request(app)
-        .post("/api/articles/4/comments")
+        .post("/api/comments/4/comments")
         .send(newComment)
         .expect(201)
         .then(({ body }) => {
@@ -225,7 +225,7 @@ exports.app6_8 = describe("all tests", () => {
 
     test("should return with 404 error when there is no post provided", () => {
       return request(app)
-        .post("/api/articles/4/comments")
+        .post("/api/comments/4/comments")
         .send({})
         .expect(400)
         .then(({ body }) => {
@@ -240,7 +240,7 @@ exports.app6_8 = describe("all tests", () => {
       };
 
       return request(app)
-        .post("/api/articles/4/comments")
+        .post("/api/comments/4/comments")
         .send(newComment)
         .expect(400)
         .then(({ body }) => {
@@ -255,7 +255,7 @@ exports.app6_8 = describe("all tests", () => {
       };
 
       return request(app)
-        .post("/api/articles/4/comments")
+        .post("/api/comments/4/comments")
         .send(newComment)
         .expect(400)
         .then(({ body }) => {
@@ -270,7 +270,7 @@ exports.app6_8 = describe("all tests", () => {
       };
 
       return request(app)
-        .post("/api/articles/999/comments")
+        .post("/api/comments/999/comments")
         .send(newComment)
         .expect(404)
         .then(({ body }) => {
