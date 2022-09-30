@@ -1,42 +1,14 @@
 const express = require("express");
 const cors = require("cors");
+const { apiRouter } = require("./routes/api_router.js");
 
-const {
-  getTopics,
-  patchVotes,
-  getUsers,
-  getArticleWithComments,
-  getArticles,
-  getComments,
-  postComment,
-  deleteComment,
-  getApis,
-} = require("./controllers/controllers.js");
+//const { getTopics, getApis } = require("./controllers/controllers.js");
 
 const app = express();
 
 app.use(cors());
-
 app.use(express.json());
-
-app.get("/api", getApis);
-app.get("/api/topics", getTopics);
-
-//app.get("/api/articles/:article_id", getArticle);
-
-app.patch("/api/articles/:article_id", patchVotes);
-
-app.get("/api/users", getUsers);
-
-app.get("/api/articles/:article_id", getArticleWithComments);
-
-app.get("/api/articles", getArticles);
-
-app.get("/api/articles/:article_id/comments", getComments);
-
-app.post("/api/articles/:article_id/comments", postComment);
-
-app.delete("/api/comments/:comment_id", deleteComment);
+app.use("/api", apiRouter);
 
 app.all("/*", (req, res) => {
   res.status(400).send({ msg: "Route not found" });

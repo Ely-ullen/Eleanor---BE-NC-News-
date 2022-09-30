@@ -1,7 +1,7 @@
 # NC-News
 
-This is a RESTful back-end web API of a News website called NC News. This was a project I completed on the Northcoders coding Boot-camp.  
-This API has get, post, patch and delete request endpoints that the user can use to interact with articles, topics, comments and votes.
+This is a RESTful back-end web API for News website called NC News. This was a project I completed on the Northcoders coding Boot-camp.  
+This API contains get, post, patch and delete request endpoints that the user can use to interact with articles, topics, comments and votes.
 
 The front-end app can be found here:
 
@@ -21,10 +21,12 @@ _Post-gress_
  npm install
 ```
 
-You can find all the dependencies in the package.json file under '_devDependancies_'
+You can find all the dependencies in the package.json file under _'"dependencies"_ and _"devDependencies"_
 
 3. Connect your database.  
-   To connect to the two databases locally you will need to set your environment variables, a .env file for both the development and testing databases.
+   To connect to the two databases locally you will need to set your environment variables, two .env files for both the development and testing databases.
+
+   Include the database names in each of these .env files
    eg.
 
    ```
@@ -51,10 +53,12 @@ npm start
 
 ## Testing:
 
+The tests were creating using supertest jest and jest sorted.
+
 To run the tests:
 
 ```
 npm test
 ```
 
-`You are now all set!` Thank you for takibgn the time to look at my NC News project.
+`You are all set!` Thank you for takibgn the time to look at my NC News project.
